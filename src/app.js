@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 
 var port = process.env.PORT || 8080;
 
-httpsServer.listen(porn, () => {
+httpsServer.listen(port, () => {
   console.log("listening https " + port);
 });
 
