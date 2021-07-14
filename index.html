@@ -5,6 +5,7 @@
     <script src="modules/mediasoupclient.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/EventEmitter/5.2.8/EventEmitter.min.js"></script>
     <script src="RoomClient.js"></script>
+    <script src="src/app.js"></script>
     <style>
         .containers {
             display: grid;
@@ -39,16 +40,57 @@
             display: none
         }
     </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 
 <body>
+    <form class="container" method="post">
     <div id="login">
-        Room:   <input id="roomidInput" value="123" type="text" />
+        Room:   <input class="form-control" name="title" id="roomidInput" value="Enter Room Name" type="text" />
         <!--<button id="createRoom" onclick="createRoom(roomid.value)" label="createRoom">Create Room</button>-->
         <br />
-        User: <input id='nameInput' value="bob" type="text" />
+        User: <input id='nameInput' value="YourName" type="text" />
         <button id='joinButton' onclick="joinRoom(nameInput.value, roomidInput.value)">Join</button>
+    
     </div>
+</form>
+
+    <html>
+<body>
+
+
+
+
+
+<!-- <html>
+
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js"></script>
+  </head>
+
+  <body>
+    <h1>Postin data from HTML to MongoDB Atlas</h1>
+    <form class="container" method="post" action="/">
+   <div class='form-group'>
+       <input class="form-control" name="title">
+   </div>
+        <div class='form-group'>
+            <textarea class="form-control"name="content"></textarea>
+        </div>
+    <div>
+        <button>
+            ADD TO MONGODB
+        </button>
+    </div>
+
+    </textarea>
+    </form>
+  </body>
+
+</html> -->
+
+
     <div id="control" class="hidden">
         <button id='exitButton' class='hidden' onclick="rc.exit()">Exit</button>
         <br/>
@@ -86,8 +128,45 @@
 
     </div>
 </body>
+
+<!-- List all array items, with keys and values -->
+<html lang="en">
+
+
+<body>
+  
+
+    <html>
+        <body>
+        
+        <h2>JavaScript Arrays</h2>
+        
+        <p id="demo"></p>
+        
+        <script>
+        //  var NewArr = [
+        //   "Saab",
+        //   "Volvo",
+        //   "BMW"
+        // ];
+         newArr.push(roomidInput.value)
+        
+        </script>
+       
+        <script type="text/javascript">
+            var uname = "Hello";
+            newArr.push(uname);
+            
+        </script>
+        </body>
+        </html>
+
+</body>
+</html>
 <footer>
     <script src="index.js"></script>
+    
 </footer>
 
 </html>
+
