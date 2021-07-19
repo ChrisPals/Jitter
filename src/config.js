@@ -2,7 +2,7 @@ const os = require("os");
 
 module.exports = {
   listenIp: "0.0.0.0",
-  listenPort: 80,
+  listenPort: 8080,
   sslCrt: "../ssl/cert.pem",
   sslKey: "../ssl/key.pem",
 
