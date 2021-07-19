@@ -1,8 +1,8 @@
 const os = require("os");
 
 module.exports = {
-  listenIp: "10.2.18.14",
-  listenPort: 80,
+  listenIp: "0.0.0.0",
+  listenPort: 8080,
   sslCrt: "../ssl/cert.pem",
   sslKey: "../ssl/key.pem",
 
@@ -50,7 +50,7 @@ module.exports = {
     webRtcTransport: {
       listenIps: [
         {
-          ip: "10.2.18.14",
+          ip: "0.0.0.0",
           announcedIp: "5.57.48.78", // replace by public IP address
         },
       ],

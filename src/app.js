@@ -24,7 +24,7 @@ const io = require("socket.io")(httpsServer);
 
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 8080;
 
 httpsServer.listen(port, () => {
   console.log("listening https " + port);
