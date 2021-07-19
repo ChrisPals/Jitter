@@ -12,6 +12,11 @@ const Peer = require("./Peer");
 const options = {
   key: fs.readFileSync(path.join(__dirname, config.sslKey), "utf-8"),
   cert: fs.readFileSync(path.join(__dirname, config.sslCrt), "utf-8"),
+  proxy: process.env.QUOTAGUARDSTATIC_URL,
+  url: "https://api.github.com/repos/joyent/node",
+  headers: {
+    "User-Agent": "node.js",
+  },
 };
 
 const httpsServer = https.createServer(options, app);
@@ -407,3 +412,13 @@ app.post("/signin", function (req, res) {
 //     }
 //   });
 // });
+
+var request = require("request");
+
+function callback(error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body);
+  }
+}
+
+request(options, callback);
