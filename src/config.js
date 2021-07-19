@@ -2,7 +2,7 @@ const os = require("os");
 
 module.exports = {
   listenIp: "0.0.0.0",
-  listenPort: 8080,
+  listenPort: 80,
   sslCrt: "../ssl/cert.pem",
   sslKey: "../ssl/key.pem",
 
@@ -10,8 +10,8 @@ module.exports = {
     // Worker settings
     numWorkers: Object.keys(os.cpus()).length,
     worker: {
-      rtcMinPort: 10000,
-      rtcMaxPort: 10100,
+      rtcMinPort: 80,
+      rtcMaxPort: 443,
       logLevel: "warn",
       logTags: [
         "info",
