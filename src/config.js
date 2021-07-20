@@ -1,7 +1,7 @@
 const os = require("os");
 
 module.exports = {
-  listenIp: "10.110.0.2",
+  listenIp: "0.0.0.0",
   listenPort: 80,
   sslCrt: "../ssl/cert.pem",
   sslKey: "../ssl/key.pem",
@@ -10,8 +10,8 @@ module.exports = {
     // Worker settings
     numWorkers: Object.keys(os.cpus()).length,
     worker: {
-      rtcMinPort: 10000,
-      rtcMaxPort: 10100,
+      rtcMinPort: 80,
+      rtcMaxPort: 443,
       logLevel: "warn",
       logTags: [
         "info",
@@ -50,8 +50,8 @@ module.exports = {
     webRtcTransport: {
       listenIps: [
         {
-          ip: "10.110.0.2",
-          announcedIp: "188.166.50.114", // replace by public IP address
+          ip: "0.0.0.0",
+          announcedIp: "52.208.145.228", // replace by public IP address
         },
       ],
       maxIncomingBitrate: 1500000,
