@@ -17,15 +17,15 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "httpolyglot": "^0.1.2",
-    "mediasoup": "^3.7.1",
-    "mediasoup-client": "^3.6.12",
+    "mediasoup": "^3.8.2",
+    "mediasoup-client": "^3.6.37",
     "mongoose": "^5.12.10",
     "protoo-client": "^4.0.4",
     "protoo-server": "^4.0.4",
     "react": "^17.0.2",
     "request": "^2.88.2",
-    "socket.io": "^2.3.0",
-    "type": "module"
+    "socket.io": "^2.3.0"
+    
   },
   "devDependencies": {
     "@babel/cli": "^7.14.3",
