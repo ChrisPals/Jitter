@@ -1,8 +1,25 @@
 const os = require("os");
+const ifaces = os.networkInterfaces();
+
+const getLocalIp = () => {
+  let localIp = "5.33.32.2";
+  Object.keys(ifaces).forEach((ifname) => {
+    for (const iface of ifaces[ifname]) {
+      // Ignore IPv6 and 127.0.0.1
+      if (iface.family !== "IPv4" || iface.internal !== false) {
+        continue;
+      }
+      // Set the local ip to the first IPv4 address found and exit the loop
+      localIp = iface.address;
+      return;
+    }
+  });
+  return localIp;
+};
 
 module.exports = {
   listenIp: "0.0.0.0",
-  listenPort: 80,
+  listenPort: 3016,
   sslCrt: "../ssl/cert.pem",
   sslKey: "../ssl/key.pem",
 
@@ -51,7 +68,7 @@ module.exports = {
       listenIps: [
         {
           ip: "0.0.0.0",
-          announcedIp: null, // replace by public IP address
+          announcedIp: getLocalIp(), // replace by public IP address
         },
       ],
       maxIncomingBitrate: 1500000,

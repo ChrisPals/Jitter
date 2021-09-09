@@ -12,11 +12,6 @@ const Peer = require("./Peer");
 const options = {
   key: fs.readFileSync(path.join(__dirname, config.sslKey), "utf-8"),
   cert: fs.readFileSync(path.join(__dirname, config.sslCrt), "utf-8"),
-  proxy: process.env.QUOTAGUARDSTATIC_URL,
-  url: "https://api.github.com/repos/joyent/node",
-  headers: {
-    "User-Agent": "node.js",
-  },
 };
 
 const httpsServer = https.createServer(options, app);
@@ -24,33 +19,34 @@ const io = require("socket.io")(httpsServer);
 
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-var port = process.env.PORT || 80;
-
-httpsServer.listen(port, () => {
-  console.log("listening https " + port);
+httpsServer.listen(config.listenPort, () => {
+  console.log(
+    "Listening on https://" + config.listenIp + ":" + config.listenPort
+  );
 });
 
 // all mediasoup workers
 let workers = [];
 let nextMediasoupWorkerIdx = 0;
 
-//  roomList
-//  {
-//   room_id: Room {
-//       id:
-//       router:
-//        peers: {
-//           id:,
-//           name:,
-//            master: [boolean],
-//            transports: [Map],
-//            producers: [Map],
-//            consumers: [Map],
-//            rtpCapabilities:
-//       }
-//    }
-//   }
-
+/**
+ * roomList
+ * {
+ *  room_id: Room {
+ *      id:
+ *      router:
+ *      peers: {
+ *          id:,
+ *          name:,
+ *          master: [boolean],
+ *          transports: [Map],
+ *          producers: [Map],
+ *          consumers: [Map],
+ *          rtpCapabilities:
+ *      }
+ *  }
+ * }
+ */
 let roomList = new Map();
 
 (async () => {
@@ -80,7 +76,6 @@ async function createWorkers() {
     // log worker resource usage
     /*setInterval(async () => {
             const usage = await worker.getResourceUsage();
-
             console.info('mediasoup Worker resource usage [pid:%d]: %o', worker.pid, usage);
         }, 120000);*/
   }
@@ -91,50 +86,48 @@ io.on("connection", (socket) => {
     if (roomList.has(room_id)) {
       callback("already exists");
     } else {
-      console.log("---created room--- ", room_id);
+      console.log("Created room", { room_id: room_id });
       let worker = await getMediasoupWorker();
       roomList.set(room_id, new Room(room_id, worker, io));
       callback(room_id);
-      roomList;
     }
   });
 
   socket.on("join", ({ room_id, name }, cb) => {
-    console.log('---user joined--- "' + room_id + '": ' + name);
+    console.log("User joined", {
+      room_id: room_id,
+      name: name,
+    });
+
     if (!roomList.has(room_id)) {
       return cb({
-        error: "room does not exist",
+        error: "Room does not exist",
       });
     }
+
     roomList.get(room_id).addPeer(new Peer(socket.id, name));
     socket.room_id = room_id;
 
     cb(roomList.get(room_id).toJson());
   });
 
-  //Room list for each
-
   socket.on("getProducers", () => {
-    console.log(
-      `---get producers--- name:${
-        roomList.get(socket.room_id).getPeers().get(socket.id).name
-      }`
-    );
-    // send all the current producer to newly joined member
     if (!roomList.has(socket.room_id)) return;
-    let producerList = roomList
-      .get(socket.room_id)
-      .getProducerListForPeer(socket.id);
+    console.log("Get producers", {
+      name: `${roomList.get(socket.room_id).getPeers().get(socket.id).name}`,
+    });
+
+    // send all the current producer to newly joined member
+    let producerList = roomList.get(socket.room_id).getProducerListForPeer();
 
     socket.emit("newProducers", producerList);
   });
 
   socket.on("getRouterRtpCapabilities", (_, callback) => {
-    console.log(
-      `---get RouterRtpCapabilities--- name: ${
-        roomList.get(socket.room_id).getPeers().get(socket.id).name
-      }`
-    );
+    console.log("Get RouterRtpCapabilities", {
+      name: `${roomList.get(socket.room_id).getPeers().get(socket.id).name}`,
+    });
+
     try {
       callback(roomList.get(socket.room_id).getRtpCapabilities());
     } catch (e) {
@@ -145,11 +138,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("createWebRtcTransport", async (_, callback) => {
-    console.log(
-      `---create webrtc transport--- name: ${
-        roomList.get(socket.room_id).getPeers().get(socket.id).name
-      }`
-    );
+    console.log("Create webrtc transport", {
+      name: `${roomList.get(socket.room_id).getPeers().get(socket.id).name}`,
+    });
+
     try {
       const { params } = await roomList
         .get(socket.room_id)
@@ -167,11 +159,10 @@ io.on("connection", (socket) => {
   socket.on(
     "connectTransport",
     async ({ transport_id, dtlsParameters }, callback) => {
-      console.log(
-        `---connect transport--- name: ${
-          roomList.get(socket.room_id).getPeers().get(socket.id).name
-        }`
-      );
+      console.log("Connect transport", {
+        name: `${roomList.get(socket.room_id).getPeers().get(socket.id).name}`,
+      });
+
       if (!roomList.has(socket.room_id)) return;
       await roomList
         .get(socket.room_id)
@@ -191,11 +182,13 @@ io.on("connection", (socket) => {
       let producer_id = await roomList
         .get(socket.room_id)
         .produce(socket.id, producerTransportId, rtpParameters, kind);
-      console.log(
-        `---produce--- type: ${kind} name: ${
-          roomList.get(socket.room_id).getPeers().get(socket.id).name
-        } id: ${producer_id}`
-      );
+
+      console.log("Produce", {
+        type: `${kind}`,
+        name: `${roomList.get(socket.room_id).getPeers().get(socket.id).name}`,
+        id: `${producer_id}`,
+      });
+
       callback({
         producer_id,
       });
@@ -210,12 +203,15 @@ io.on("connection", (socket) => {
         .get(socket.room_id)
         .consume(socket.id, consumerTransportId, producerId, rtpCapabilities);
 
-      console.log(
-        `---consuming--- name: ${
+      console.log("Consuming", {
+        name: `${
           roomList.get(socket.room_id) &&
           roomList.get(socket.room_id).getPeers().get(socket.id).name
-        } prod_id:${producerId} consumer_id:${params.id}`
-      );
+        }`,
+        producer_id: `${producerId}`,
+        consumer_id: `${params.id}`,
+      });
+
       callback(params);
     }
   );
@@ -230,33 +226,36 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log(
-      `---disconnect--- name: ${
+    console.log("Disconnect", {
+      name: `${
         roomList.get(socket.room_id) &&
         roomList.get(socket.room_id).getPeers().get(socket.id).name
-      }`
-    );
+      }`,
+    });
+
     if (!socket.room_id) return;
     roomList.get(socket.room_id).removePeer(socket.id);
   });
 
   socket.on("producerClosed", ({ producer_id }) => {
-    console.log(
-      `---producer close--- name: ${
+    console.log("Producer close", {
+      name: `${
         roomList.get(socket.room_id) &&
         roomList.get(socket.room_id).getPeers().get(socket.id).name
-      }`
-    );
+      }`,
+    });
+
     roomList.get(socket.room_id).closeProducer(socket.id, producer_id);
   });
 
   socket.on("exitRoom", async (_, callback) => {
-    console.log(
-      `---exit room--- name: ${
+    console.log("Exit room", {
+      name: `${
         roomList.get(socket.room_id) &&
         roomList.get(socket.room_id).getPeers().get(socket.id).name
-      }`
-    );
+      }`,
+    });
+
     if (!roomList.has(socket.room_id)) {
       callback({
         error: "not currently in a room",
@@ -275,6 +274,7 @@ io.on("connection", (socket) => {
   });
 });
 
+// TODO remove - never used?
 function room() {
   return Object.values(roomList).map((r) => {
     return {
