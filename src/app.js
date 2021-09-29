@@ -347,8 +347,8 @@ app.get("/", function (req, res) {
   //.deleteMany({});
 });
 
-app.get("/signin", function (req, res) {
-  res.render("signin", {});
+app.get("/Signin", function (req, res) {
+  res.render("Signin", {});
 });
 
 app.get("/register", function (req, res) {
@@ -378,7 +378,7 @@ app.post("/register", function (req, res) {
   user.save();
 });
 
-app.post("/signin", function (req, res) {
+app.post("/Signin", function (req, res) {
   console.log("validating user");
 
   User.findOne(
@@ -389,7 +389,7 @@ app.post("/signin", function (req, res) {
         res.redirect("./");
       } else {
         console.log("user doesn't exist");
-        res.redirect("/signin");
+        res.redirect("/Signin");
       }
     }
   );
