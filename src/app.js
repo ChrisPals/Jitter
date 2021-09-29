@@ -363,6 +363,7 @@ app.post("/", function (req, res) {
   });
 
   newRoomid.save();
+  res.status(204).send();
 });
 
 app.post("/register", function (req, res) {
@@ -414,6 +415,7 @@ app.post("/signin", function (req, res) {
 // });
 
 var request = require("request");
+const { exit } = require("process");
 
 function callback(error, response, body) {
   if (!error && response.statusCode == 200) {
