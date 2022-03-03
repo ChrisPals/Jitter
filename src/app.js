@@ -1,3 +1,8 @@
+// import React from "react";
+// import { createStore } from "Redux";
+
+// const store = createStore();
+
 const express = require("express");
 
 const app = express();
@@ -322,6 +327,13 @@ const roomidSchema = {
 
 const RoomId = mongoose.model("Roomid", roomidSchema);
 
+const JoinedroomSchema = {
+  roomid: String,
+  timestamp: Date,
+};
+
+const JoinedRoom = mongoose.model("JoinedRoom", roomidSchema);
+
 const userSchema = {
   email: String,
   password: String,
@@ -347,6 +359,27 @@ app.get("/", function (req, res) {
   //.deleteMany({});
 });
 
+// search for similar documents to entered tags
+
+//tastes for each
+
+app.get("/taste", function (req, res) {
+  RoomId.find(
+    {
+      roomid: { $exists: true, $ne: "" },
+    },
+    function (err, roomids) {
+      res.render("taste", {
+        roomidList: roomids,
+      });
+    }
+  )
+    .limit(10)
+    .sort({ timestamp: -1 });
+
+  //.deleteMany({});
+});
+
 app.get("/Signin", function (req, res) {
   res.render("Signin", {});
 });
@@ -355,14 +388,25 @@ app.get("/register", function (req, res) {
   res.render("register", {});
 });
 
+app.get("/room", function (req, res) {
+  res.render("room", {});
+});
+
+app.get("/taste", function (req, res) {
+  res.render("taste", {});
+});
+
 app.post("/", function (req, res) {
   console.log("Posting RoomId");
   let newRoomid = new RoomId({
     roomid: req.body.title,
     timestamp: now,
   });
-
   newRoomid.save();
+  let newJoinedRoom = new JoinedroomSchema({
+    roomid: req.body.title,
+    timestamp: now,
+  });
   res.status(204).send();
 });
 
@@ -373,8 +417,8 @@ app.post("/register", function (req, res) {
     password: req.body.password,
     name: req.body.name,
   });
-  console.log("redirecting to home");
-  res.redirect("./");
+  console.log("redirecting to tastes");
+  res.redirect("/Taste");
   user.save();
 });
 

@@ -1,0 +1,101 @@
+<html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+            <script src="socket.io/socket.io.js"></script>
+            <script src="modules/mediasoupclient.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/EventEmitter/5.2.8/EventEmitter.min.js"></script>
+            <script src="RoomClient.js"></script>
+            <script src="src/app.js"></script>
+            <style>
+                .containers {
+                    display: grid;
+                    grid-gap: 5px;
+                    grid-template-columns: repeat(auto-fit, 1fr);
+                    grid-template-rows: repeat(auto-fit, 300px);
+                }
+        
+                .container {
+                    display: flex;
+                }
+        
+                .vid {
+                    flex: 0 1 auto;
+                    height: 400px;
+                }
+        
+                .settings {
+                    background-color: #4CAF50;
+                    border: none;
+                    color: white;
+                    padding: 5px 10px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 14px;
+                    margin: 2px 2px;
+                    cursor: pointer;
+                }
+        
+                .hidden {
+                    display: none
+                }
+                .homebtn {
+                    position: absolute;
+                    size: 300px;
+                    top: 10px;
+                    right: 10px;
+                }
+                .RoomNameList {
+                  
+                    display: inline-grid;
+                    grid-auto-columns: 300px;
+                    grid-auto-rows: 100px;
+                   
+                    grid-gap: 20px 50px;
+                }
+            </style>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+        <body>
+            
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                <%roomidList.forEach(roomid => {%>
+                   
+                        
+                    <tr>
+                       
+                        
+                        <% var relevantRoom = roomid.roomid  %> 
+
+                        <!-- <script> relevantRoom.slice(1, -1)</script> -->
+                        
+                        <!-- <form class="container" method="post"> -->
+                            <!-- <!-- <div id="login">
+                                 -->
+                                <h2 class='RoomNameList' type="text" value= "123">
+                                 
+                            
+
+                                <button class='joinButton' onclick="changeValue(this),joinRoom(nameInput.value, roomidInput.value)"><%= relevantRoom %></button>
+                            </div>
+                        </form>
+                    </tr>
+                <%})%>
+                </tbody>    
+              </table>
+
+              <div>
+                <a class="homebtn" href='./'><button>Go To Rooms</button></a>
+            </div>
+        </body>
+        </html>

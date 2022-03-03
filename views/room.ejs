@@ -63,55 +63,56 @@
      }
  </script>
 
-<body>
+<!-- <script>
+    function process()
+    {
+        var url = "/" + document.getElementById("url").value;
+        location.href = url;
+        return false;
+    }
+</script> -->
+
+<body onload="getURL()">
+
+    <h1>Hello World!</h1>
+    
+    <script>
+   function getURL() {
+        
+        const urlSplit = window.location.href.split("/")
+        alert("The URL of this page is: " + urlSplit(1));
+        const roomUrl = urlSplit(1)
+    </script>
+    
+    </body>
+
+
+
+
     <form class="container" method="post">
      
-    <div id="login">
-      
-        Room:   <input class="form-control" name="title" id="roomidInput" value="Enter Room Name" type="text" />
-        <!--<button id="createRoom" onclick="createRoom(roomid.value)" label="createRoom">Create Room</button>-->
-        <br />
-        User: <input id='nameInput' value="YourName" type="text" />
-        <button id='joinButton' onclick="joinRoom(nameInput.value, roomidInput.value)">Join</button>
-
-        <html>
-<p id="p-display"></p>
-
-<div class="container">
-  <form>
-    <label for="post" id="post">Add a tag to your Room</label><br>
-    <input type="text" id="post-box" name="post">
-    <!-- <button id="btn-submit">Add Tag</button> -->
-  </form>
- </div> 
-
-</html>
-
-<script>
-var post_item = document.getElementById("post-box");
-var btn = document.getElementById("btn-submit");
-
-addEventListener("keyup", function changeValue()
-{
-console.log(post_item.value);
-document.getElementById("p-display").innerHTML = post_item.value;
-});
-
-</script>
-    </div>
-</form>
+     <div id="login">
+       
+         Room:   <input class="form-control" name="title" id="roomidInput" value= type="text" />
+         <!--<button id="createRoom" onclick="createRoom(roomid.value)" label="createRoom">Create Room</button>-->
+         <br />
+         User: <input id='nameInput' value="YourName" type="text" />
+         <button id='joinButton' onclick="joinRoom(nameInput.value, roomidInput.value)">Join</button>
+ 
+     </div>
+ </form>
 
     <html>
 <body>
 
+   
 
 
 
 
 
 
-
-    <div id="control" class="hidden">
+    <div id="control" class="control">
         <button id='exitButton' class='hidden' onclick="rc.exit()">Exit</button>
         <br/>
         audio: <select id="audioSelect">
@@ -120,13 +121,13 @@ document.getElementById("p-display").innerHTML = post_item.value;
         video: <select id="videoSelect">
         </select>
         <br />
-        <button id='startAudioButton' class='hidden' onclick="rc.produce(RoomClient.mediaType.audio, audioSelect.value)">audio</button>
+        <button id='startAudioButton' class='control' onclick="rc.produce(RoomClient.mediaType.audio, audioSelect.value)">audio</button>
         <button id='stopAudioButton' class='hidden' onclick="rc.closeProducer(RoomClient.mediaType.audio)">close
             audio</button>
-        <button id='startVideoButton' class='hidden' onclick="rc.produce(RoomClient.mediaType.video, videoSelect.value)">video</button>
+        <button id='startVideoButton' class='control' onclick="rc.produce(RoomClient.mediaType.video, videoSelect.value)">video</button>
         <button id='stopVideoButton' class='hidden' onclick="rc.closeProducer(RoomClient.mediaType.video)">close
             video</button>
-        <button id='startScreenButton' class='hidden' onclick="rc.produce(RoomClient.mediaType.screen)">screen</button>
+        <button id='startScreenButton' class='control' onclick="rc.produce(RoomClient.mediaType.screen)">screen</button>
         <button id='stopScreenButton' class='hidden' onclick="rc.closeProducer(RoomClient.mediaType.screen)">close
             screen</button>
         <br />
@@ -135,7 +136,7 @@ document.getElementById("p-display").innerHTML = post_item.value;
 
 
 
-    <div id='videoMedia' class='hidden'>
+    <div id='videoMedia' class='control'>
         <h2>------local------</h2>
         <div id="localMedia"></div>
         <!--<video id="localVideo" autoplay inline class="vid"></video>-->
@@ -168,7 +169,7 @@ document.getElementById("p-display").innerHTML = post_item.value;
 
 </body>
 </html>
- <html lang="en">
+ <!-- <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -184,28 +185,28 @@ document.getElementById("p-display").innerHTML = post_item.value;
                   </tr>
                 </thead>
                 <tbody>
-                <%roomidList.forEach(roomid => {%>
+                 <%#roomidList.forEach(roomid => {%> 
                    
                         
-                    <tr>
+                    <tr> -->
                        
                         
-                        <% var relevantRoom = roomid.roomid  %> 
+                        <%# var relevantRoom = roomid.roomid  %> 
 
                         <!-- <script> relevantRoom.slice(1, -1)</script> -->
                         
                         <!-- <form class="container" method="post"> -->
                             <!-- <!-- <div id="login">
                                  -->
-                                <h2 class='RoomNameList' type="text" value= "123">
+                                <!-- <h2 class='RoomNameList' type="text" value= "123">
                                  
                             
 
-                                <button class='joinButton' onclick="changeValue(this),joinRoom(nameInput.value, roomidInput.value)"><%= relevantRoom %></button>
+                                <button class='joinButton' onclick="changeValue(this),joinRoom(nameInput.value, roomidInput.value)"><#%= relevantRoom %></button>
                             </div>
                         </form>
                     </tr>
-                <%})%>
+                <#%})%>
                 </tbody>    
               </table>
         </body>
@@ -213,7 +214,7 @@ document.getElementById("p-display").innerHTML = post_item.value;
 
         <div>
             <a class="signinbtn" href='/signin'><button>Signin</button></a>
-        </div>
+        </div> --> -->
 <footer>
     <script src="index.js"></script>
     
