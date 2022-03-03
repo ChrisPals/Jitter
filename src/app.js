@@ -323,16 +323,28 @@ mongoose.connect(
 const roomidSchema = {
   roomid: String,
   timestamp: Date,
+  image: Buffer,
+  imageName: String,
 };
 
 const RoomId = mongoose.model("Roomid", roomidSchema);
 
-const JoinedroomSchema = {
-  roomid: String,
-  timestamp: Date,
+const ImageSchema = {
+  name: String,
+
+  data: Buffer,
+
+  contentType: String,
 };
 
-const JoinedRoom = mongoose.model("JoinedRoom", roomidSchema);
+const Image = mongoose.model("ImageSchema", ImageSchema);
+
+// const JoinedroomSchema = {
+//   roomid: String,
+//   timestamp: Date,
+// };
+
+// const JoinedRoom = mongoose.model("JoinedRoom", roomidSchema);
 
 const userSchema = {
   email: String,
@@ -396,17 +408,28 @@ app.get("/taste", function (req, res) {
   res.render("taste", {});
 });
 
+// var i = Math.floor(Math.random() * 6) + 1;
+
 app.post("/", function (req, res) {
   console.log("Posting RoomId");
+  var ImageSchema = mongoose.model("ImageSchema", ImageSchema);
+
+  var imgPath =
+    "/Users/christofferpalsgaard/Code/mediasoup-sfu-webrtc-video-rooms/src/images/image1.jpg";
+
+  var imgData = fs.readFileSync(imgPath);
+
+  var Image = new ImageSchema({ data: imgData, contentType: "image/png" });
+
+  Image.save(function (err, image) {});
   let newRoomid = new RoomId({
     roomid: req.body.title,
     timestamp: now,
+    image: imgData,
+    imageName: imgPath,
   });
   newRoomid.save();
-  let newJoinedRoom = new JoinedroomSchema({
-    roomid: req.body.title,
-    timestamp: now,
-  });
+
   res.status(204).send();
 });
 
